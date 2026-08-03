@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import {
     Card,
     CardImg,
@@ -5,20 +6,22 @@ import {
     CardTitle
 } from 'reactstrap';
 
-const CampsiteCard = ({ campsite, setCampsiteId }) => {
+const CampsiteCard = ({ campsite }) => {
     const { id, image, name } = campsite;
 
     return (
-        <Card onClick={() => setCampsiteId(id)}>
-            <CardImg
-                width='100%'
-                src={image}
-                alt={name}
-            />
-            <CardImgOverlay>
-                <CardTitle>{name}</CardTitle>
-            </CardImgOverlay>
-        </Card>
+        <Link to={`${id}`}>
+            <Card>
+                <CardImg
+                    width='100%'
+                    src={image}
+                    alt={name}
+                />
+                <CardImgOverlay>
+                    <CardTitle>{name}</CardTitle>
+                </CardImgOverlay>
+            </Card>
+        </Link>
     );
 };
 
