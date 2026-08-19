@@ -5,6 +5,8 @@ import CampsiteDetail from '../features/campsites/CampsiteDetail';
 import CommentsList from '../features/comments/CommentsList';
 import { selectCampsiteById } from '../features/campsites/campsitesSlice';
 import SubHeader from '../components/SubHeader';
+import Error from '../components/Error';
+import Loading from '../components/Loading';
 
 const CampsiteDetailPage = () => {
     const { campsiteId } = useParams();
@@ -13,12 +15,28 @@ const CampsiteDetailPage = () => {
 
     console.log('campsite:', campsite);
 
+    const isLoading = useSelector((state) => state.campsites.isLoading);
+    const errMsg = useSelector((state) => state.campsites.errMsg);
+    let content = null;
+
+    if (isLoading) {
+        content = <Loading />;
+    } else if (errMsg) {
+        content = <Error errMsg={errMsg} />;
+    } else {
+        content = (
+            <>
+                <CampsiteDetail campsite={campsite} />
+                <CommentsList campsiteId={Number(campsiteId)} />           
+            </>
+        )
+    }
+
     return (
         <Container>
-            <SubHeader current={campsite?.name} detail={true} />
+            {campsite && <SubHeader current={campsite.name} detail={true} />}
             <Row>
-                <CampsiteDetail campsite={campsite} />
-                <CommentsList campsiteId={Number(campsiteId)} />
+                {content}
             </Row>
         </Container>
     );
